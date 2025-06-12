@@ -5,14 +5,16 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/T2Knock/pokedexcli/internal/pokeapi"
+	"github.com/T2Knock/pokedexcli/internal/pokecache"
 )
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(config *pokeapi.Config) error
+	callback    func(config *pokeapi.Config, cache *pokecache.Cache) error
 }
 
 func cleanInput(text string) []string {
@@ -33,7 +35,8 @@ func commandHelp(commands map[string]cliCommand) error {
 	return nil
 }
 
-func commandExit(config *pokeapi.Config) error {
+func commandExit(config *pokeapi.Config, cache *pokecache.Cache) error {
+	cache.Close()
 	fmt.Println("Closing the Pokedex... Goodbye!")
 
 	os.Exit(0)
@@ -54,7 +57,7 @@ func main() {
 		"help": {
 			name:        "help",
 			description: "Displays a help message",
-			callback:    func(config *pokeapi.Config) error { return commandHelp(commands) },
+			callback:    func(config *pokeapi.Config, cache *pokecache.Cache) error { return commandHelp(commands) },
 		},
 		"map": {
 			name:        "map",
@@ -71,6 +74,8 @@ func main() {
 	config := &pokeapi.Config{
 		NextURL: "https://pokeapi.co/api/v2/location-area",
 	}
+
+	cache := pokecache.NewCache(5 * time.Second)
 
 	for {
 		fmt.Print("Pokedex > ")
@@ -89,7 +94,7 @@ func main() {
 			continue
 		}
 
-		err := registerCommand.callback(config)
+		err := registerCommand.callback(config, cache)
 		if err != nil {
 			fmt.Println(err)
 		}
