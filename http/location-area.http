@@ -1,4 +1,4 @@
-GET https://pokeapi.co/api/v2/location
+GET https://pokeapi.co/api/v2/location-area
 
 ###
 
