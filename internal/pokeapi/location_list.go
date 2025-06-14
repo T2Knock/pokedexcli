@@ -13,7 +13,6 @@ func (c *Client) ListLocations(pageURL *string) (LocationAreaResponse, error) {
 		url = *pageURL
 	}
 
-	fmt.Println(url)
 	var result LocationAreaResponse
 
 	if cache, ok := c.cache.Get(url); ok {
@@ -40,6 +39,8 @@ func (c *Client) ListLocations(pageURL *string) (LocationAreaResponse, error) {
 	if err != nil {
 		return LocationAreaResponse{}, err
 	}
+
+	c.cache.Add(url, data)
 
 	if err = json.Unmarshal(data, &result); err != nil {
 		return LocationAreaResponse{}, fmt.Errorf("failed to parse JSON: %w", err)
