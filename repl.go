@@ -27,11 +27,15 @@ func startRepl(config *config) {
 		fmt.Print("Pokedex > ")
 
 		if !scanner.Scan() {
-			continue
+			return
 		}
 
 		input := scanner.Text()
 		parseInput := cleanInput(input)
+
+		if len(parseInput) == 0 {
+			continue
+		}
 
 		command := parseInput[0]
 		var args []string
