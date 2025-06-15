@@ -18,12 +18,12 @@ func commandInspect(config *config, args []string) error {
 
 	fmt.Println("Stats:")
 	for _, stat := range pokemon.Stats {
-		fmt.Printf("\t-%v: %v\n", stat.Stat.Name, stat.BaseStat)
+		fmt.Printf(" -%v: %v\n", stat.Stat.Name, stat.BaseStat)
 	}
 
 	fmt.Println("Types:")
 	for _, pokemonType := range pokemon.Types {
-		fmt.Printf("\t- %v\n", pokemonType.Type.Name)
+		fmt.Printf(" - %v\n", pokemonType.Type.Name)
 	}
 
 	return nil
