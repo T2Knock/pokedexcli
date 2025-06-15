@@ -7,7 +7,7 @@ import (
 
 func commandCatch(config *config, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("explore command requires a pokemon name")
+		return fmt.Errorf("catch command requires a pokemon name")
 	}
 
 	pokemonName := args[0]
@@ -20,8 +20,12 @@ func commandCatch(config *config, args []string) error {
 
 	caught := attemptCatch(pokemon.BaseExperience)
 	if caught {
+		fmt.Printf("%v was caught! \n", pokemonName)
 		config.pokedex[pokemonName] = pokemon
+		return nil
 	}
+
+	fmt.Println("You missed the Pokémon!")
 
 	return nil
 }
